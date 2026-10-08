@@ -277,6 +277,12 @@ class UiComponentsTest extends TestCase
         $html = $this->render('<x-ui.checkbox checked />');
         $this->assertStringNotContainsString('type="hidden"', $html);
         $this->assertStringNotContainsString('name="', $html);
+
+        // Array names must not emit the hidden "0" input — a stray "0" would
+        // fail exists:… array validation rules (roles[], permissions[]).
+        $html = $this->render('<x-ui.checkbox name="roles[]" checked />');
+        $this->assertStringContainsString('name="roles[]"', $html);
+        $this->assertStringNotContainsString('type="hidden"', $html);
     }
 
     public function test_slider_renders_with_range_input(): void

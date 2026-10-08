@@ -237,8 +237,12 @@ differs from the slot. Listen for changes with `x-on:select-change.window`.
 
 ```blade
 {{-- with name: emits a hidden "0" input so unchecked values still submit --}}
-<x-ui.switch name="active" :checked="old('active', $user->active)?" />
-<x-ui.checkbox name="terms" :checked="old('terms')?" />
+<x-ui.switch name="active" :checked="(bool) old('active', $user->active)" />
+<x-ui.checkbox name="terms" :checked="(bool) old('terms')" />
+
+{{-- array names ("roles[]") omit the hidden input: unchecked items are
+     simply dropped, so `exists:…,id` array rules keep passing --}}
+<x-ui.checkbox name="roles[]" :value="$role->id" :checked="in_array($role->id, old('roles', []))" />
 
 {{-- standalone UI-only toggles: no hidden input, no name --}}
 <x-ui.switch x-model="notificationsEnabled" />
