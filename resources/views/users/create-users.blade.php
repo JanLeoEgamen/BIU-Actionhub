@@ -10,172 +10,99 @@
 
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
 
-            <div class="bg-white shadow-sm sm:rounded-lg">
+            <div class="bg-white shadow-sm rounded-xl border border-gray-200">
 
-                <div class="p-6">
+                <div class="p-6 space-y-6">
 
-                    <form
-                        method="POST"
-                        action="{{ route('users.store') }}"
-                    >
+                    <form method="POST" action="{{ route('users.store') }}">
 
                         @csrf
 
-                        <div>
+                        <div class="space-y-4">
+                            <div>
+                                <x-input-label for="name" :value="__('Name')" required />
+                                <x-text-input
+                                    id="name"
+                                    name="name"
+                                    type="text"
+                                    :value="old('name')"
+                                    required
+                                    class="mt-1"
+                                />
+                                <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                            </div>
 
-                            <label
-                                for="name"
-                                class="block text-sm font-medium text-gray-700"
-                            >
-                                Name
-                            </label>
+                            <div>
+                                <x-input-label for="email" :value="__('Email')" required />
+                                <x-text-input
+                                    id="email"
+                                    name="email"
+                                    type="email"
+                                    :value="old('email')"
+                                    required
+                                    class="mt-1"
+                                />
+                                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                            </div>
 
-                            <input
-                                id="name"
-                                name="name"
-                                type="text"
-                                value="{{ old('name') }}"
-                                required
-                                class="mt-1 block w-full rounded-md border-gray-300"
-                            >
+                            <div>
+                                <x-input-label for="password" :value="__('Password')" required />
+                                <x-text-input
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    required
+                                    class="mt-1"
+                                />
+                                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                            </div>
 
-                            @error('name')
-                                <p class="mt-2 text-sm text-red-600">
-                                    {{ $message }}
-                                </p>
-                            @enderror
-
-                        </div>
-
-                        <div class="mt-4">
-
-                            <label
-                                for="email"
-                                class="block text-sm font-medium text-gray-700"
-                            >
-                                Email
-                            </label>
-
-                            <input
-                                id="email"
-                                name="email"
-                                type="email"
-                                value="{{ old('email') }}"
-                                required
-                                class="mt-1 block w-full rounded-md border-gray-300"
-                            >
-
-                            @error('email')
-                                <p class="mt-2 text-sm text-red-600">
-                                    {{ $message }}
-                                </p>
-                            @enderror
-
-                        </div>
-
-                        <div class="mt-4">
-
-                            <label
-                                for="password"
-                                class="block text-sm font-medium text-gray-700"
-                            >
-                                Password
-                            </label>
-
-                            <input
-                                id="password"
-                                name="password"
-                                type="password"
-                                required
-                                class="mt-1 block w-full rounded-md border-gray-300"
-                            >
-
-                            @error('password')
-                                <p class="mt-2 text-sm text-red-600">
-                                    {{ $message }}
-                                </p>
-                            @enderror
-
-                        </div>
-
-                        <div class="mt-4">
-
-                            <label
-                                for="password_confirmation"
-                                class="block text-sm font-medium text-gray-700"
-                            >
-                                Confirm Password
-                            </label>
-
-                            <input
-                                id="password_confirmation"
-                                name="password_confirmation"
-                                type="password"
-                                required
-                                class="mt-1 block w-full rounded-md border-gray-300"
-                            >
-
+                            <div>
+                                <x-input-label for="password_confirmation" :value="__('Confirm Password')" required />
+                                <x-text-input
+                                    id="password_confirmation"
+                                    name="password_confirmation"
+                                    type="password"
+                                    required
+                                    class="mt-1"
+                                />
+                            </div>
                         </div>
 
                         <div class="mt-6">
-
-                            <h3 class="font-medium text-gray-900">
-                                Roles
-                            </h3>
-
-                            <div class="mt-3 space-y-2">
-
+                            <h3 class="text-sm font-medium text-gray-900">Roles</h3>
+                            <p class="text-sm text-gray-500 mt-1">
+                                Assign one or more roles to the user.
+                            </p>
+                            <div class="mt-3 space-y-3">
                                 @forelse ($roles as $role)
-
                                     <label class="flex items-center gap-3">
-
                                         <input
                                             type="checkbox"
                                             name="roles[]"
                                             value="{{ $role->id }}"
-                                            @checked(
-                                                in_array(
-                                                    $role->id,
-                                                    old('roles', [])
-                                                )
-                                            )
+                                            @checked(in_array($role->id, old('roles', [])))
                                             class="rounded border-gray-300"
                                         >
-
-                                        <span>
+                                        <span class="text-sm text-gray-700">
                                             {{ $role->name }}
                                         </span>
-
                                     </label>
-
                                 @empty
-
-                                    <p class="text-gray-500">
-                                        No roles available.
+                                    <p class="text-sm text-gray-500">
+                                        {{ __('No roles available.') }}
                                     </p>
-
                                 @endforelse
-
                             </div>
-
                         </div>
 
-                        <div class="mt-6 flex gap-3">
-
-                            <a
-                                href="{{ route('users.index') }}"
-                                class="px-4 py-2 bg-gray-100 rounded-md"
-                            >
-                                Cancel
-                            </a>
-
-                            <button
-                                type="submit"
-                                class="px-4 py-2 bg-gray-800 text-white rounded-md"
-                            >
-                                Create User
-                            </button>
-
+                        <div class="flex gap-3 pt-2">
+                            <x-secondary-button tag="a" href="{{ route('users.index') }}" class="flex-1">
+                                {{ __('Cancel') }}
+                            </x-secondary-button>
+                            <x-primary-button class="flex-1">
+                                {{ __('Create User') }}
+                            </x-primary-button>
                         </div>
 
                     </form>
