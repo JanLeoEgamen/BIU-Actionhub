@@ -1,0 +1,13 @@
+@props(['type' => 'button'])
+
+@php
+// Port of mockup/src/components/ui/alert-dialog.tsx — AlertDialogCancel
+// (buttonVariants({ variant: "outline" }) + responsive top margin).
+$classes = 'mt-2 sm:mt-0 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-9 px-4 py-2 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground';
+@endphp
+
+<button
+    type="{{ $type }}"
+    x-on:click="show = false"
+    {{ $attributes->merge(['class' => $classes]) }}
+>{{ $slot }}</button>

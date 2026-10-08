@@ -1,1 +1,29 @@
-@props([\n    'label',\n    'description' => '',\n    'size' => 'default',\n])\n\n<div class="space-y-2">\n    @if ($label)\n        <label for="{{ $id ?? 'form-group' }}" class="text-sm font-medium text-gray-700">\n            {{ $label }}\n            @if ($required)\n                <span class="text-red-500 ml-1">*</span>\n            @endif\n        </label>\n        @if ($description)\n            <p class="text-sm text-gray-500">{{ $description }}</p>\n        @endif\n    @endif\n    {{ $slot }}\n</div>
+@props([
+    'label' => null,
+    'description' => '',
+    'id' => null,
+    'required' => false,
+])
+
+@php
+// Fixed: the previous file contained literal "\n" sequences and referenced
+// undefined $id/$required variables, which broke rendering.
+$required = $required !== false && $required !== null && $required !== 'false';
+@endphp
+
+<div class="space-y-2">
+    @if ($label)
+        <label for="{{ $id }}" class="text-sm font-medium text-gray-700">
+            {{ $label }}
+            @if ($required)
+                <span class="text-red-500 ml-1">*</span>
+            @endif
+        </label>
+    @endif
+
+    @if ($description)
+        <p class="text-sm text-gray-500">{{ $description }}</p>
+    @endif
+
+    {{ $slot }}
+</div>
